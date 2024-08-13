@@ -2620,7 +2620,7 @@ DeliveryName	InstallName	FileCheckSum	FileOrigin	InstalledFilePermission
 <deliverydir>/models/tools/docker/partials/common/ml/modin-ray.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/common/ml/modin-ray.partial.Dockerfile	684649109	internal	644
 <deliverydir>/models/tools/docker/partials/common/datasets/execute_preprocess_coco_val.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/common/datasets/execute_preprocess_coco_val.partial.Dockerfile	3384320022	internal	644
 <deliverydir>/models/tools/docker/partials/ubuntu/tcmalloc.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/ubuntu/tcmalloc.partial.Dockerfile	392852062	internal	644
-<deliverydir>/models/tools/docker/partials/ubuntu/miniconda.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/ubuntu/miniconda.partial.Dockerfile	3697768710	internal	644
+<deliverydir>/models/tools/docker/partials/ubuntu/miniforge.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/ubuntu/miniforge.partial.Dockerfile	3697768710	internal	644
 <deliverydir>/models/tools/docker/partials/ubuntu/openmpi-2.1.1-8.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/ubuntu/openmpi-2.1.1-8.partial.Dockerfile	1120458574	internal	644
 <deliverydir>/models/tools/docker/partials/ubuntu/python-3.6.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/ubuntu/python-3.6.partial.Dockerfile	968645442	internal	644
 <deliverydir>/models/tools/docker/partials/ubuntu/entrypoint.partial.Dockerfile	<installdir>/modelzoo/<version>/models/tools/docker/partials/ubuntu/entrypoint.partial.Dockerfile	2926003293	internal	644
