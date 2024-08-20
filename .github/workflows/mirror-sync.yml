@@ -1,0 +1,30 @@
+name: Mirror sync-up
+on:
+    workflow_dispatch:
+permissions: write-all
+jobs:
+  mirror-sync:
+    name: Mirror sync-up
+    runs-on: self-hosted
+    steps:
+      - name: Sync external repo
+        id: mirror-repo
+        run: |
+          wget --quiet https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
+          echo === bfg artifact obtained ===
+          git clone --bare --single-branch --branch main https://github.com/intel-innersource/frameworks.ai.models.intel-models.git airm-bare-main-branch
+          echo === source repo\'s bare main branch cloned ===
+          cd poc-lreal-source-main-bare
+          echo === moved to repo dir ===
+          java -jar ../bfg-1.14.0.jar --delete-folders .github --delete-files .github --no-blob-protection
+          echo === .github folder cleaned ===
+          git reflog expire --expire=now --all && git gc --prune=now --aggressive
+          echo === useless refs in git db cleaned ===
+          git push --mirror https://tfqaprod:{{ secrets.TF_QA_PROD }}@github.com/intel/ai-reference-models.git
+          echo === target repo mirrored ===
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -fr airm-bare-main-branch*
+          rm bfg-1.14.0.jar
+          echo === working files cleaned ===
