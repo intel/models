@@ -40,7 +40,9 @@ jobs:
           VALIDATE_DOCKERFILE_HADOLINT: false
           VALIDATE_GROOVY: false
           VALIDATE_JSCPD: false
+          VALIDATE_JSON_PRETTIER: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
+          VALIDATE_MARKDOWN_PRETTIER: false
           VALIDATE_NATURAL_LANGUAGE: false
           #disabled python till code cleanup
           VALIDATE_PYTHON: false
@@ -52,4 +54,5 @@ jobs:
           VALIDATE_PYTHON_RUFF: false
           #disabled till shell format implementation
           VALIDATE_SHELL_SHFMT: false
+          VALIDATE_YAML_PRETTIER: false
           YAML_CONFIG_FILE: .yaml-lint.yml
