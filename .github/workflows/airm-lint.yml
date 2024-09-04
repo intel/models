@@ -51,6 +51,7 @@ jobs:
           VALIDATE_PYTHON_ISORT: false
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_PYLINT: false
+          VALIDATE_PYTHON_PYINK: false
           VALIDATE_PYTHON_RUFF: false
           #disabled till shell format implementation
           VALIDATE_SHELL_SHFMT: false
