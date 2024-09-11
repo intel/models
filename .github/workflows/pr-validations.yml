@@ -1,6 +1,6 @@
 name: PR validations
 on:
-  pull_request:
+  pull_request: null
 permissions: read-all
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -9,20 +9,20 @@ jobs:
   checks_setup:
     name: Setup checks
     # TODO: remove condition to enable the job for all pull requests
-    if: startsWith(github.head_ref, 'lreal/')
+    if: startsWith(github.head_ref, 'ttitswor/') || startsWith(github.head_ref, 'lreal/')
     runs-on: k8-runners
     outputs:
       checks: ${{ steps.set_checks.outputs.checks }}
     steps:
       - uses: actions/checkout@v4
-      - name: Analize changed files
+      - name: Analyze changed files
         id: set_checks
+        run: |
+          echo "checks=`python3 .github/utils/pr-checks-setup.py \
+            -c .github/config/compliance-config.json \
+            -u ${{ github.event.pull_request.url }}`" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          echo "checks=`python3 .github/utils/pr-checks-setup.py
-                                -c .github/config/compliance-config.json
-                                -u ${{ github.event.pull_request.url }}`" >> $GITHUB_OUTPUT
       - name: Print checks information
         run:
           echo ${{ toJson(steps.set_checks.outputs.checks) }} | jq
@@ -33,10 +33,10 @@ jobs:
     if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_bom_change }}
     steps:
       - name: Call BoM change action
-        run:
-          python3 .github/utils/comment-bom-changes.py
-                  -u ${{ github.event.pull_request.url }}
-                  -j ${{ fromJson(needs.checks_setup.outputs.checks).files.bom }}
+        run: |
+          python3 .github/utils/comment-bom-changes.py \
+            -u ${{ github.event.pull_request.url }} \
+            -j ${{ fromJson(needs.checks_setup.outputs.checks).files.bom }}
   models_check:
     name: Models workloads
     needs: checks_setup
@@ -49,13 +49,28 @@ jobs:
       - name: Workload test execution
         run: echo "Place holder for ${{ matrix.workload }} workload execution"
   containers_check:
-    name: Containers building
+    name: Build Containers
     needs: checks_setup
     runs-on: k8-runners
     if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_container_change }}
     strategy:
       matrix:
-        container: ${{ fromJSON(needs.checks_setup.outputs.checks).dirs.containers_to_check }}
+        container: ${{ fromJSON(needs.checks_setup.outputs.checks).dirs.compose_commands_to_run }}
     steps:
-      - name: Workload test execution
-        run: echo "Place holder for ${{ matrix.container }} container building"
+      - uses: actions/checkout@v4
+      # - uses: docker/login-action@v2
+      #   with:
+      #     registry: ${{ secrets.REGISTRY }}
+      #     username: ${{ secrets.REGISTRY_USER }}
+      #     password: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Docker Compose Up
+        run: |
+          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} up --build ${{ matrix.container.services }}
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
+      - name: Docker Compose Down
+        if: always()
+        run: |
+          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
