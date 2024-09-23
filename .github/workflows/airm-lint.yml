@@ -25,7 +25,7 @@ jobs:
         uses: super-linter/super-linter/slim@v7.1.0
         env:
           # To report GitHub Actions status checks
-          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTIONS_COMMAND_ARGS: '-ignore SC.*'
           VALIDATE_ANSIBLE: false
           #disabled till code cleanup
