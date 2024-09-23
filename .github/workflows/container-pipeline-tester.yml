@@ -24,8 +24,7 @@ jobs:
       matrix: ${{ steps.matrix.outputs.matrix }}
     runs-on: ['k8-runners']
     env:
-      # excluding from the build due to issues: ["docker/max-gpu", "tf-cpu"]
-      DEFAULT_GROUPS: '["docker/dataset", "docker/flex-gpu", "docker/pyt-cpu", "docker/cuda-gpu"]'
+      DEFAULT_GROUPS: '["docker/pytorch", "docker/tensorflow", "docker/tf-cpu"]'
     steps:
       - uses: actions/checkout@v4
       - name: Set Matrix
@@ -38,17 +37,6 @@ jobs:
 
   build-containers:
     needs: [setup-build-matrix]
-    container:
-      image: ${{ vars.REGISTRY }}/aiops/compose-dev
-      env:
-        http_proxy: ${{ secrets.HTTP_PROXY }}
-        https_proxy: ${{ secrets.HTTPS_PROXY }}
-        no_proxy: ${{ secrets.NO_PROXY }}
-      credentials:
-        username: ${{ secrets.REGISTRY_USER }}
-        password: ${{ secrets.REGISTRY_TOKEN }}
-      volumes:
-        - /usr/local/share/ca-certificates/:/usr/local/share/ca-certificates/
     runs-on: ['k8-runners']
     strategy:
       matrix:
@@ -61,8 +49,11 @@ jobs:
           echo ${{ vars.REGISTRY }}
           docker --version
           docker compose version
-      - name: Setup Intel Certificates
-        run: update-ca-certificates --fresh
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
       - name: Build Container Group
         uses: intel-innersource/frameworks.ai.infrastructure.machine-learning-operations/.github@develop
         with:
