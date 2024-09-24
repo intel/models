@@ -4,7 +4,7 @@ on:
     inputs:
       group_dir:
         required: true
-        description: 'Enter Container Group Directory (docker/flex-gpu, docker/max-gpu, etc.):'
+        description: 'Enter Container Group Directory (docker/pytorch, docker/tensorflow, etc.):'
         type: string
       env_overrides:
         description: 'Enter Bash Env Variable Overrides in `KEY=VAL KEY2=VAL2` format:'
@@ -24,7 +24,7 @@ jobs:
       matrix: ${{ steps.matrix.outputs.matrix }}
     runs-on: ['k8-runners']
     env:
-      DEFAULT_GROUPS: '["docker/pytorch", "docker/tensorflow", "docker/tf-cpu"]'
+      DEFAULT_GROUPS: '["docker/pytorch", "docker/tensorflow"]'
     steps:
       - uses: actions/checkout@v4
       - name: Set Matrix
