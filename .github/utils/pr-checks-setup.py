@@ -29,7 +29,7 @@ def build_checks_json(pr_info, config, api_url):
             "is_container_change": False,
         },
         "files": {"pr": [], "bom": []},
-        "dirs": {"workloads_to_run": set(), "compose_commands_to_run": set()},
+        "dirs": {"workloads_to_run": set(), "services": list()},
     }
     
     PIPE = "|"
@@ -48,8 +48,7 @@ def build_checks_json(pr_info, config, api_url):
         + f'({PIPE.join(config["frameworks"])})/[\w-]+/({PIPE.join(config["mode"])})/({PIPE.join(config["platform"])})/[\w/.-]+$'
     )
 
-    compose_map = {}
-    compose_command = []
+    services = {}
 
     # review changed files in the PR and activate check to run accordingly 
     for file in pr_info[:]:
@@ -76,25 +75,21 @@ def build_checks_json(pr_info, config, api_url):
                     checks_json["dirs"]["compose_commands_to_run"].add(container_root)
             # container change
             if valid_container_dir.match(file["filename"]):
+                checks_json["flags"]["is_container_change"] = True
                 composefile = "/".join(file["filename"].split("/")[0:2]) # docker/<framework>
                 service = "-".join(file["filename"].split("/")[2:5]) # <framework>-<mode>-<platform>
-                if composefile not in compose_map or not compose_map[composefile]:
-                    compose_map[composefile] = [service]
-                else:
-                    compose_map[composefile].append(service)
-                for composefile, services in compose_map.items():
-                    compose_command.append(
-                        {
-                            "services": " ".join(services),
-                            "project": f"{os.getenv('GITHUB_RUN_NUMBER', default='0')}-{composefile.split('/')[1]}",
-                            "file": f"{composefile}/docker-compose.yml"
-                        }
-                    )
-                checks_json["flags"]["is_container_change"] = True
+                services[service] = composefile
+
+    for service, composefile in services.items():
+        checks_json["dirs"]["services"].append(
+            {
+                "service": service,
+                "project": f"{os.getenv('GITHUB_RUN_NUMBER', default='0')}-{composefile.split('/')[1]}",
+                "file": f"{composefile}/docker-compose.yml"
+            }
+        )
 
     checks_json["dirs"]["workloads_to_run"] = list(checks_json["dirs"]["workloads_to_run"])
-    checks_json["dirs"]["compose_commands_to_run"] = compose_command
-
     return checks_json
 
 

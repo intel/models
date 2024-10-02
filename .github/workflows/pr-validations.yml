@@ -9,7 +9,7 @@ jobs:
   checks_setup:
     name: Setup checks
     # TODO: remove condition to enable the job for all pull requests
-    if: startsWith(github.head_ref, 'ttitswor/') || startsWith(github.head_ref, 'lreal/')
+    if: startsWith(github.head_ref, 'sramakr1/') || startsWith(github.head_ref, 'lreal/')
     runs-on: k8-runners
     outputs:
       checks: ${{ steps.set_checks.outputs.checks }}
@@ -49,13 +49,15 @@ jobs:
       - name: Workload test execution
         run: echo "Place holder for ${{ matrix.workload }} workload execution"
   containers_check:
-    name: Build Containers
+    name: Build and Test Container
     needs: checks_setup
     runs-on: k8-runners
     if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_container_change }}
     strategy:
       matrix:
-        container: ${{ fromJSON(needs.checks_setup.outputs.checks).dirs.compose_commands_to_run }}
+        container: ${{ fromJSON(needs.checks_setup.outputs.checks).dirs.services }}
+        experimental: [true]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       # - uses: docker/login-action@v2
@@ -65,12 +67,12 @@ jobs:
       #     password: ${{ secrets.REGISTRY_TOKEN }}
       - name: Docker Compose Up
         run: |
-          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} up --build ${{ matrix.container.services }}
+          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} up --build ${{ matrix.container.service }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
       - name: Docker Compose Down
         if: always()
         run: |
-          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down
+          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down ${{ matrix.container.service }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
