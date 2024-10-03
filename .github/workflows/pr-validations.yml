@@ -9,7 +9,7 @@ jobs:
   checks_setup:
     name: Setup checks
     # TODO: remove condition to enable the job for all pull requests
-    if: startsWith(github.head_ref, 'sramakr1/') || startsWith(github.head_ref, 'lreal/')
+    #if: startsWith(github.head_ref, 'sramakr1/') || startsWith(github.head_ref, 'lreal/')
     runs-on: k8-runners
     outputs:
       checks: ${{ steps.set_checks.outputs.checks }}
