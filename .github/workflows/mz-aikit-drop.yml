@@ -5,17 +5,17 @@ on:
     inputs:
       target_branch:
         description: 'Model zoo branch name'
-        default: develop
+        default: main
         required: true
         type: string
       mz_version:
         description: 'Model zoo version'
-        default: '3.0.0'
+        default: '3.2'
         required: true
         type: string
       aikit_release:
         description: 'Target AIKit version'
-        default: '2024.0.0'
+        default: '2025.0.0'
         required: true
         type: string
   workflow_call:
@@ -41,7 +41,7 @@ jobs:
   aikit_drop:
     runs-on: [self-hosted, Linux]
     container:
-      image: amr-registry.caas.intel.com/aiops/imz-dev-ci:py3.9
+      image: amr-cache-registry.caas.intel.com/cache/python:3.11
       env:
         http_proxy: ${{ secrets.HTTP_PROXY }}
         https_proxy: ${{ secrets.HTTPS_PROXY }}
