@@ -29,7 +29,7 @@ def build_checks_json(pr_info, config, api_url):
             "is_container_change": False,
         },
         "files": {"pr": [], "bom": []},
-        "dirs": {"workloads_to_run": set(), "services": list()},
+        "dirs": {"workloads_to_run": set(), "services": set()},
     }
     
     PIPE = "|"
@@ -72,7 +72,7 @@ def build_checks_json(pr_info, config, api_url):
                 # add check for dependent containers
                 if os.path.exists(container_root):
                     checks_json["flags"]["is_container_change"] = True
-                    checks_json["dirs"]["compose_commands_to_run"].add(container_root)
+                    checks_json["dirs"]["services"].add(container_root)
             # container change
             if valid_container_dir.match(file["filename"]):
                 checks_json["flags"]["is_container_change"] = True
@@ -81,7 +81,7 @@ def build_checks_json(pr_info, config, api_url):
                 services[service] = composefile
 
     for service, composefile in services.items():
-        checks_json["dirs"]["services"].append(
+        checks_json["dirs"]["services"].add(
             {
                 "service": service,
                 "project": f"{os.getenv('GITHUB_RUN_NUMBER', default='0')}-{composefile.split('/')[1]}",
@@ -90,6 +90,7 @@ def build_checks_json(pr_info, config, api_url):
         )
 
     checks_json["dirs"]["workloads_to_run"] = list(checks_json["dirs"]["workloads_to_run"])
+    checks_json["dirs"]["services"] = list(checks_json["dirs"]["services"])
     return checks_json
 
 
