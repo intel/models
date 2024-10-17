@@ -29,7 +29,8 @@ def build_checks_json(pr_info, config, api_url):
             "is_container_change": False,
         },
         "files": {"pr": [], "bom": []},
-        "dirs": {"workloads_to_run": set(), "services": set()},
+        "dirs": {"workloads": set(), "containers": set()},
+        "services": list()
     }
     
     PIPE = "|"
@@ -47,8 +48,6 @@ def build_checks_json(pr_info, config, api_url):
         "^docker/"
         + f'({PIPE.join(config["frameworks"])})/[\w-]+/({PIPE.join(config["mode"])})/({PIPE.join(config["platform"])})/[\w/.-]+$'
     )
-
-    services = {}
 
     # review changed files in the PR and activate check to run accordingly 
     for file in pr_info[:]:
@@ -68,20 +67,23 @@ def build_checks_json(pr_info, config, api_url):
                     "models_v2", "docker"
                 )
                 checks_json["flags"]["is_model_change"] = True
-                checks_json["dirs"]["workloads_to_run"].add(model_root)
+                checks_json["dirs"]["workloads"].add(model_root)
                 # add check for dependent containers
                 if os.path.exists(container_root):
                     checks_json["flags"]["is_container_change"] = True
-                    checks_json["dirs"]["services"].add(container_root)
+                    checks_json["dirs"]["containers"].add(container_root)
             # container change
             if valid_container_dir.match(file["filename"]):
+                container_root = "/".join(file["filename"].split("/")[0:5]).replace(
+                    "models_v2", "docker"
+                )
                 checks_json["flags"]["is_container_change"] = True
-                composefile = "/".join(file["filename"].split("/")[0:2]) # docker/<framework>
-                service = "-".join(file["filename"].split("/")[2:5]) # <framework>-<mode>-<platform>
-                services[service] = composefile
+                checks_json["dirs"]["containers"].add(container_root)
 
-    for service, composefile in services.items():
-        checks_json["dirs"]["services"].add(
+    for container in checks_json["dirs"]["containers"]:
+        composefile = "/".join(container.split("/")[0:2]) # docker/<framework>
+        service = "-".join(container.split("/")[2:5]) # <framework>-<mode>-<platform>
+        checks_json["services"].append(
             {
                 "service": service,
                 "project": f"{os.getenv('GITHUB_RUN_NUMBER', default='0')}-{composefile.split('/')[1]}",
@@ -89,8 +91,9 @@ def build_checks_json(pr_info, config, api_url):
             }
         )
 
-    checks_json["dirs"]["workloads_to_run"] = list(checks_json["dirs"]["workloads_to_run"])
-    checks_json["dirs"]["services"] = list(checks_json["dirs"]["services"])
+    checks_json["dirs"]["workloads"] = list(checks_json["dirs"]["workloads"])
+    checks_json["dirs"]["containers"] = list(checks_json["dirs"]["containers"])
+
     return checks_json
 
 

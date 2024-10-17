@@ -55,7 +55,7 @@ jobs:
     if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_container_change }}
     strategy:
       matrix:
-        container: ${{ fromJSON(needs.checks_setup.outputs.checks).dirs.services }}
+        container: ${{ fromJSON(needs.checks_setup.outputs.checks).services }}
         experimental: [true]
       fail-fast: false
     steps:
