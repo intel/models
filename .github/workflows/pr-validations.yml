@@ -28,14 +28,20 @@ jobs:
     name: BoM changes found
     needs: checks_setup
     runs-on: k8-runners
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_bom_change }}
     steps:
       - uses: actions/checkout@v4
       - name: Call BoM change action
         run: |
           python3 .github/utils/comment-bom-changes.py \
-            -u ${{ github.event.pull_request.url }} \
-            -j ${{ fromJson(needs.checks_setup.outputs.checks).files.bom }}
+            -u '${{ github.event.pull_request.url }}' \
+            -j '${{ toJson(fromJson(needs.checks_setup.outputs.checks).files.bom) }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   containers_check:
     name: Build and Test Container
     needs: checks_setup
