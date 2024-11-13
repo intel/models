@@ -28,6 +28,10 @@ function generate_new_requirements_files () {
     requirement_base=${requirement_base,,} # convert to lower case
     requirement_base=$(echo "${requirement_base}" | tr '-' '_')
     #local requirement_base=$(echo ${vr} | cut -d '=' -f 1)
+    if [[ "${vr}" == "@" ]] 
+    then
+	continue
+    fi
     debug "Key: ${requirement_base}; Value: ${vr}"
     requirements_versions_map[${requirement_base}]="${vr}"
   done
