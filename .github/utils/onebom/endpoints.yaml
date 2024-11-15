@@ -1,0 +1,31 @@
+---
+AuthenticationTokenURL:
+  PROD: https://apis.intel.com/v1/auth/token
+  SAND: https://apis-internal-sandbox.intel.com/v1/auth/token
+GetSoftwareComponentDetails:
+  PROD: https://apis-internal.intel.com/product-genealogy/v3/software-component-details
+  SAND: https://apis-internal-sandbox.intel.com/product-genealogy/v3/software-component-details
+  STAGE: https://apis-internal-stage.intel.com/product-genealogy/v3/software-component-details
+GetSoftwareComponentVersion:
+  PROD: https://apis.intel.com/product-genealogy/v4/software-component-version-details
+  SAND: https://apis-internal-sandbox.intel.com/product-genealogy/v3/software-component-details
+  STAGE: https://apis-internal-stage.intel.com/product-genealogy/v3/software-component-details
+GetSoftwareComponentRelationships:
+  PROD: https://apis-internal.intel.com/product-genealogy/v1/item-relationships
+  SAND: https://apis-internal-sandbox.intel.com/product-genealogy/v1/item-relationships
+  STAGE: https://apis-internal-stage.intel.com/product-genealogy/v1/item-relationships
+GetSoftwareReleaseDetails:
+  PROD: https://apis-internal.intel.com/item/v1/software-release-details
+GetSoftwareVariantDetails:
+  PROD: https://apis-internal.intel.com/item/v1/software-variant-details
+MapVariantToComponent:
+  PROD: https://apis.intel.com/product-genealogy/v1/one-bom-link-variant-to-software-components
+  SAND: https://apis-sandbox.intel.com/product-genealogy/v1/one-bom-link-variant-to-software-components
+  STAGE: https://apis-stage.intel.com/product-genealogy/v1/one-bom-link-variant-to-software-components
+MemorializeReleaseToVersion:
+  PROD: https://apis.intel.com/product-genealogy/v1/one-bom-link-release-to-software-component-versions
+OneBomTokenURL:
+  PROD: https://ipxonebomapp.intel.com:443/login
+  SAND: https://ipxservicesdev.intel.com:1443/login
+SoftwareComponentVersionCreateUpdate:
+  PROD: https://apis.intel.com/product-genealogy/v1/software-component-versions
