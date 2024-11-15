@@ -17,7 +17,7 @@ on:
       runner_label:
         required: true
         type: string
-      work-container:
+      work_container:
         required: true
         default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
         type: string
@@ -38,7 +38,7 @@ on:
       runner_label:
         required: true
         type: string
-      work-container:
+      work_container:
         required: true
         default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
         type: string
@@ -46,7 +46,7 @@ jobs:
   generate_bom_scans:
     runs-on: ${{ inputs.runner_label }}
     container:
-      image: ${{ inputs.work-container }}
+      image: ${{ inputs.work_container }}
       env:
         https_proxy: ${{ secrets.https_proxy }}
         http_proxy: ${{ secrets.http_proxy }}
