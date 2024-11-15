@@ -1,0 +1,2 @@
+./models_v2/pytorch/rnnt/inference/cpu/requirements.txt
+./models_v2/pytorch/stable_diffusion/training/cpu/requirements.txt

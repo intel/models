@@ -1,0 +1,163 @@
+name: OneBoM-Generator
+on:
+  workflow_dispatch:
+    inputs:
+      current-ref:
+        description: 'Enter target branch, tag:'
+        required: true
+        type: string
+        default: main
+      previous-ref:
+        description: 'Enter prior release target branch, tag (to generate BoM Delta):'
+        required: true
+        type: string
+        default: r3.1.1
+      work_container:
+        description: 'Container for the CI to use for work'
+        required: true
+        default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
+        type: string
+      runner_label:
+        description: 'Enter one label of the runner that will execute the workflow:'
+        required: true
+        type: string
+        default: k8-runners
+
+jobs:
+  # do file work for previous release
+  generate_previous_release_files:
+    runs-on: ${{ inputs.runner_label }}
+    container:
+      image: ${{ inputs.work_container }}
+      env:
+        https_proxy: ${{ secrets.https_proxy }}
+        http_proxy: ${{ secrets.http_proxy }}
+        no_proxy: ${{ secrets.no_proxy }}
+    outputs:
+      requirements-files: ${{ steps.requirements-data.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "scripts"
+          ref: "jaimemcc/onebom-generator"
+      - name: Pulling previous release
+        uses: actions/checkout@v4
+        with:
+          path: "previous-release"
+          ref: ${{ inputs.previous-ref }}
+      - name: Generating requirements data
+        id: requirements-data
+        run: |
+          python3 scripts/.github/utils/onebom/generate-requirements-data.py -d "previous-release" -o "previous-release/requirements_files_list.json"
+          echo matrix=$(cat "previous-release/requirements_files_list.json" | jq -c .) >> "$GITHUB_OUTPUT"
+        shell: bash
+  generate_previous_release_pins:
+    needs: generate_previous_release_files
+    strategy:
+      max-parallel: 3 # while testing - 3 is probably good for general speed
+      fail-fast: false # for debugging
+      matrix:
+        requirements-file: ${{ fromJson(needs.generate_previous_release_files.outputs.requirements-files) }}
+    uses: intel-innersource/frameworks.ai.models.intel-models/.github/workflows/generate_bom_scans.yml@main # this is a private repo
+    with:
+      ref: ${{ inputs.previous-ref }}
+      requirements-file: ${{ matrix.requirements-file }}
+      release-label: ${{ inputs.previous-ref }}
+      job-index: ${{ strategy.job-index }}
+      runner_label: ${{ inputs.runner_label }}
+      work_container: ${{ inputs.work_container }}
+  # do file work for current release
+  generate_current_release_files:
+    runs-on: ${{ inputs.runner_label }}
+    container:
+      image: ${{ inputs.work_container }}
+      env:
+        https_proxy: ${{ secrets.https_proxy }}
+        http_proxy: ${{ secrets.http_proxy }}
+        no_proxy: ${{ secrets.no_proxy }}
+    outputs:
+      requirements-files: ${{ steps.requirements-data.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "scripts"
+          ref: "jaimemcc/onebom-generator"
+      - name: Pulling current release
+        uses: actions/checkout@v4
+        with:
+          path: "current-release"
+          ref: ${{ inputs.current-ref }}
+      - name: Generating requirements data
+        id: requirements-data
+        run: |
+          python3 scripts/.github/utils/onebom/generate-requirements-data.py -d "current-release" -o "current-release/requirements_files_list.json"
+          echo matrix=$(cat "current-release/requirements_files_list.json" | jq -c .) >> "$GITHUB_OUTPUT"
+        shell: bash
+  generate_current_release_pins:
+    needs: generate_current_release_files
+    strategy:
+      max-parallel: 3 # while testing - 3 is probably good for general speed
+      fail-fast: false # for debugging
+      matrix:
+        requirements-file: ${{ fromJson(needs.generate_current_release_files.outputs.requirements-files) }}
+    uses: intel-innersource/frameworks.ai.models.intel-models/.github/workflows/generate_bom_scans.yml@main
+    with:
+      ref: ${{ inputs.current-ref }}
+      requirements-file: ${{ matrix.requirements-file }}
+      release-label: ${{ inputs.current-ref }}
+      job-index: ${{ strategy.job-index }}
+      runner_label: ${{ inputs.runner_label }}
+      work_container: ${{ inputs.work_container }}
+  # combine the results of both and compare for a master list of changes
+  generate_changed_apps:
+    runs-on: ${{ inputs.runner_label }}
+    container:
+      image: ${{ inputs.work_container }}
+      env:
+        https_proxy: ${{ secrets.https_proxy }}
+        http_proxy: ${{ secrets.http_proxy }}
+        no_proxy: ${{ secrets.no_proxy }}
+    needs: [generate_previous_release_pins, generate_current_release_pins]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "scripts"
+      - name: Pull pinned files from previous and current release data
+        uses: actions/download-artifact@v4
+        with:
+          path: "output_data"
+          merge-multiple: true
+      - name: Generate apps needing creation & update
+        run: |
+          mkdir -p output_data/final output_data/final/apps-needing-create output_data/final/apps-needing-update output_data/final/apps-needing-disable
+          python3 scripts/.github/utils/onebom/generate-component-and-version-lists.py \
+            -p output_data/$previous -n output_data/$current -o output_data/final
+        env:
+          previous: ${{ inputs.previous-ref }}
+          current: ${{ inputs.current-ref }}
+        shell: bash
+      - name: Tidy the data
+        run: |
+          # generating tables of the diffs
+          for i in `ls output_data/$previous`; do cat output_data/$previous/$i/map.txt | tee -a output_data/$previous/chart.txt; done
+          for i in `ls output_data/$current`; do cat output_data/$current/$i/map.txt | tee -a output_data/$current/chart.txt; done
+          # generating tables for create/update lists
+          for i in `ls output_data/final/apps-needing-create`; do cat output_data/final/apps-needing-create/$i/map.txt | tee -a output_data/final/apps-needing-create/chart.txt; done
+          for i in `ls output_data/final/apps-needing-update`; do cat output_data/final/apps-needing-update/$i/map.txt | tee -a output_data/final/apps-needing-update/chart.txt; done
+          for i in `ls output_data/final/apps-needing-disable`; do cat output_data/final/apps-needing-disable/$i/map.txt | tee -a output_data/final/apps-needing-disable/chart.txt; done
+          # spit the data out to step summary
+          if [[ -f output_data/final/apps-needing-create/chart.txt ]]; then
+            echo -e "## Apps Needing to be Created\n" >> $GITHUB_STEP_SUMMARY
+            cat output_data/final/apps-needing-create/chart.txt > $GITHUB_STEP_SUMMARY
+          fi
+          if [[ -f output_data/final/apps-needing-update/chart.txt ]]; then
+            echo -e "## Apps Needing to be Updated\n" >> $GITHUB_STEP_SUMMARY
+            cat output_data/final/apps-needing-update/chart.txt > $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          previous: ${{ inputs.previous-ref }}
+          current: ${{ inputs.current-ref }}
+      - uses: actions/upload-artifact@v4
+        with:
+          path: "output_data"
+          name: "final-releases-metadata"

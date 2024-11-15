@@ -1,0 +1,58 @@
+name: Create App in SPEED and IPX for BoM
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+      artifact-name:
+        required: true
+        type: string
+      runner_label:
+        required: true
+        type: string
+      work-container:
+        required: false
+        default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
+        type: string
+  workflow_dispatch:
+    inputs:
+      ref:
+        required: true
+        type: string
+      artifact-name:
+        required: true
+        type: string
+      run-id:
+        required: true
+        type: string
+      runner_label:
+        required: true
+        type: string
+      work-container:
+        required: false
+        default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
+        type: string
+jobs:
+  create_item_in_speed:
+    runs-on: ${{ inputs.runner_label }}
+    container:
+      image: ${{ inputs.work-container }}
+      env:
+        https_proxy: ${{ secrets.https_proxy }}
+        http_proxy: ${{ secrets.http_proxy }}
+        no_proxy: ${{ secrets.no_proxy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "scripts"
+          ref: "jaimemcc/onebom-generator"
+      - uses: actions/download-artifact@v4
+        if: "${{ github.event_name == 'workflow_dispatch' }}"
+        with:
+          name: ${{ inputs.artifact-name }}
+          run-id: ${{ inputs.run-id }}
+      - uses: actions/download-artifact@v4
+        if: "${{ github.event_name != 'workflow_dispatch' }}"
+        with:
+          name: ${{ inputs.artifact-name }}
