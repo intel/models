@@ -1,0 +1,105 @@
+name: Generate Pinned Requirements and Trivy Scan for BOM
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+      requirements-file:
+        required: true
+        type: string
+      release-label:
+        required: true
+        type: string
+      job-index:
+        required: true
+        type: string
+      runner_label:
+        required: true
+        type: string
+      work-container:
+        required: true
+        default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
+        type: string
+  workflow_dispatch:
+    inputs:
+      ref:
+        required: true
+        type: string
+      requirements-file:
+        required: true
+        type: string
+      release-label:
+        required: true
+        type: string
+      job-index:
+        required: true
+        type: string
+      runner_label:
+        required: true
+        type: string
+      work-container:
+        required: true
+        default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
+        type: string
+jobs:
+  generate_bom_scans:
+    runs-on: ${{ inputs.runner_label }}
+    container:
+      image: ${{ inputs.work-container }}
+      env:
+        https_proxy: ${{ secrets.https_proxy }}
+        http_proxy: ${{ secrets.http_proxy }}
+        no_proxy: ${{ secrets.no_proxy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "scripts"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          path: ${{ inputs.release-label }}
+          sparse-checkout: ${{ inputs.requirements-file }}
+      - name: Generate Frozen Requirements File
+        run: |
+          mkdir -p $output_dir
+          cp "${{ inputs.release-label }}/${{ inputs.requirements-file }}" $output_dir/requirements.orig.txt
+          echo "# Installing from ${{ inputs.requirements-file }}"
+          python3.10 -m venv venv && source venv/bin/activate
+          pip install --upgrade setuptools pip wheel
+          export SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
+          if [[ "${{ inputs.requirements-file }}" == "requirements.txt" ]]; then
+            pip install -r $releaselabel/requirements.txt
+          else
+            pip install -r "$releaselabel/${{ inputs.requirements-file }}"
+          fi
+          export filepath="$output_dir/requirements.frozen.txt"
+          echo "# Freezing requirements"
+          pip freeze --all > $filepath
+          echo "$filenum:${{ inputs.requirements-file }}" >> $output_dir/map.txt
+          echo unumber=$releaselabel-$filenum >> "$GITHUB_ENV"
+        shell: bash
+        env:
+          releaselabel: ${{ inputs.release-label }}
+          filenum: ${{ inputs.job-index }}
+          output_dir: "output_data/${{ inputs.release-label }}/${{ inputs.job-index }}"
+      - name: Generate Final Assembly Requirements For Scanning
+        run: |
+          source venv/bin/activate
+          python scripts/.github/utils/onebom/generate-top-requirements-assembly.py -r "$releaselabel/${{ inputs.requirements-file }}" -f "$output_dir/requirements.frozen.txt" -o "$output_dir/requirements.txt"
+        shell: bash
+        env:
+          releaselabel: ${{ inputs.release-label }}
+          output_dir: "output_data/${{ inputs.release-label }}/${{ inputs.job-index }}"
+      - name: Run Trivy Scans
+        run: |
+          trivy fs --format spdx-json --list-all-pkgs --scanners vuln -o "$output_dir/trivy-scan-spdx.json" "$output_dir/requirements.txt"
+        shell: bash
+        env:
+          output_dir: "output_data/${{ inputs.release-label }}/${{ inputs.job-index }}"
+      - name: Upload BOM Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: "output_data"
+          name: "${{ env.unumber }}"
+          retention-days: 1 # after final-metadata-package is uploaded, these are redundant
