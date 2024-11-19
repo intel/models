@@ -18,7 +18,7 @@ on:
         required: true
         type: string
       work_container:
-        required: true
+        required: false
         default: 'amr-registry.caas.intel.com/aiops/airm-onebom-ci'
         type: string
   workflow_dispatch:
