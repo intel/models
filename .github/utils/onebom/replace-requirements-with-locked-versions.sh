@@ -74,7 +74,9 @@ function generate_new_requirements_files () {
           debug "****match****"
           echo ${locked_req} >> ${file}
         else
-          check_error -1 "No Value associated with Key: ${locked_req}"
+          #check_error -1 "No Value associated with Key: ${locked_req}"
+          debug "No Value associated with Key: ${locked_req}; using ${stripped_req} instead"
+          echo ${stipped_req} >> ${file}
         fi
       else
         debug "Stripped Requirement String was Blank."
