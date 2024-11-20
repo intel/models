@@ -93,6 +93,7 @@ jobs:
           output_dir: "output_data/${{ inputs.release-label }}/${{ inputs.job-index }}"
       - name: Run Trivy Scans
         run: |
+          trivy image --download-db-only --db-repository amr-cache-registry.caas.intel.com/cache/aquasec/trivy-db --insecure
           trivy fs --format spdx-json --list-all-pkgs --scanners vuln -o "$output_dir/trivy-scan-spdx.json" "$output_dir/requirements.txt"
         shell: bash
         env:
