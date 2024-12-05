@@ -16,7 +16,7 @@ on:
         description: 'Enter Project branch, tag:'
         required: true
         type: string
-        default: develop
+        default: main
       buildCommand:
         description: 'Enter Project build command or Script:'
         required: false
@@ -30,7 +30,7 @@ on:
         description: 'Enter coverity server url:'
         required: true
         type: string
-        default: https://coverityent.devtools.intel.com/prod8
+        default: https://coverity.devtools.intel.com/prod8
       stream:
         description: 'Enter coverity stream name:'
         required: true
