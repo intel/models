@@ -65,7 +65,17 @@
     "pytorch/dlrm/training/cpu",
     "pytorch/dlrm/inference/cpu",
     "pytorch/resnet50/training/cpu",
-    "pytorch/resnet50/inference/cpu"
+    "pytorch/resnet50/inference/cpu",
+    "tensorflow/resnet50v1_5/inference/cpu",
+    "tensorflow/resnet50v1_5/training/cpu",
+    "tensorflow/3d_unet/inference/cpu",
+    "tensorflow/bert_large/inference/cpu",
+    "tensorflow/bert_large/training/cpu",
+    "tensorflow/bert_large_hf/inference/cpu",
+    "tensorflow/bert/inference/cpu",
+    "tensorflow/stable_diffusion/inference/cpu",
+    "tensorflow/graphsage/inference/cpu",
+    "tensorflow/wide_deep/inference/cpu"
   ],
   "skip_test_structure_check": [
     "jax/gemma/inference/cpu",
@@ -122,6 +132,16 @@
     "pytorch/chatglm/inference/cpu",
     "pytorch/yolov7/inference/cpu",
     "pytorch/LCM/inference/cpu",
-    "pytorch/gpt-j_mlperf/inference/cpu"
+    "pytorch/gpt-j_mlperf/inference/cpu",
+    "tensorflow/resnet50v1_5/inference/cpu",
+    "tensorflow/resnet50v1_5/training/cpu",
+    "tensorflow/3d_unet/inference/cpu",
+    "tensorflow/bert_large/inference/cpu",
+    "tensorflow/bert_large/training/cpu",
+    "tensorflow/bert_large_hf/inference/cpu",
+    "tensorflow/bert/inference/cpu",
+    "tensorflow/stable_diffusion/inference/cpu",
+    "tensorflow/graphsage/inference/cpu",
+    "tensorflow/wide_deep/inference/cpu"
   ]
 }
