@@ -32,6 +32,12 @@ def build_checks_json(pr_info, config, api_url):
         "dirs": {"workloads": set(), "containers": set()},
         "services": list()
     }
+
+    # dictionary for runner labels
+    runner = {
+      "cpu": "k8-runners",
+      "gpu": "pvc"
+    }
     
     PIPE = "|"
 
@@ -83,11 +89,13 @@ def build_checks_json(pr_info, config, api_url):
     for container in checks_json["dirs"]["containers"]:
         composefile = "/".join(container.split("/")[0:2]) # docker/<framework>
         service = "-".join(container.split("/")[2:5]) # <framework>-<mode>-<platform>
+        platform = container.split("/")[4] # cpu/gpu
         checks_json["services"].append(
             {
                 "service": service,
                 "project": f"{os.getenv('GITHUB_RUN_NUMBER', default='0')}-{composefile.split('/')[1]}",
-                "file": f"{composefile}/docker-compose.yml"
+                "file": f"{composefile}/docker-compose.yml",
+                "runner": f"{runner[platform]}"
             }
         )
 
