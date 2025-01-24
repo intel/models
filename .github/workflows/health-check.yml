@@ -1,0 +1,64 @@
+name: Health Check
+on:
+  workflow_dispatch:
+    inputs:
+      test-file:
+        type: string
+        description: 'Test file name'
+        required: true
+        default: 'smoke.yaml'
+      dry-run:
+        type: boolean
+        description: 'Dry run to show what will be executed'
+        required: true
+        default: false
+permissions: read-all
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks_setup:
+    name: Setup checks
+    runs-on: k8-runners
+    outputs:
+      checks: ${{ steps.set_checks.outputs.checks }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Analyze changed files
+        id: set_checks
+        run:
+          echo "checks=`python3 .github/utils/checks-setup.py
+            -c .github/config/compliance-config.json
+            -f  ${{ inputs.test-file }}
+            health-check`" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print checks information
+        run:
+          echo ${{ toJson(steps.set_checks.outputs.checks) }} | jq
+  test_execution:
+    name: Repository Health Check
+    needs: checks_setup
+    runs-on: ${{ matrix.container.runner }}
+    strategy:
+      matrix:
+        container: ${{ fromJSON(needs.checks_setup.outputs.checks).services }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: intel/ai-containers
+          path: ai-containers
+      - name: Install Requirements
+        run: pip install -r ai-containers/test-runner/requirements.txt
+      - name: Build Container
+        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} build ${{ matrix.container.service }}
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
+      - name: Check test file exists
+        run: test -f ${{ matrix.container.smoke }}
+      - name: Execute Test Runner
+        run: python3 ai-containers/test-runner/test_runner.py -f ${{ matrix.container.smoke }}
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}

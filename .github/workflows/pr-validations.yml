@@ -15,11 +15,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Analyze changed files
         id: set_checks
-        run: |
-          echo "checks=`python3 .github/utils/pr-checks-setup.py \
-            -c .github/config/compliance-config.json \
-            -u ${{ github.event.pull_request.url }} \
-            -f smoke.yaml`" >> $GITHUB_OUTPUT
+        run:
+          echo "checks=`python3 .github/utils/checks-setup.py
+            -c .github/config/compliance-config.json
+            -f smoke.yaml
+            pr-check
+            -u ${{ github.event.pull_request.url }}`" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print checks information
@@ -37,9 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Call BoM change action
-        run: |
-          python3 .github/utils/comment-bom-changes.py \
-            -u '${{ github.event.pull_request.url }}' \
+        run:
+          python3 .github/utils/comment-bom-changes.py
+            -u '${{ github.event.pull_request.url }}'
             -j '${{ toJson(fromJson(needs.checks_setup.outputs.checks).files.bom) }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,14 +56,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Docker Compose Up
-        run: |
-          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} up --build ${{ matrix.container.service }}
+        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} up --build ${{ matrix.container.service }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
       - name: Docker Compose Down
         if: always()
-        run: |
-          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down ${{ matrix.container.service }}
+        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down ${{ matrix.container.service }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
   smoke_test:
@@ -83,8 +82,7 @@ jobs:
       - name: Install Requirements
         run: pip install -r ai-containers/test-runner/requirements.txt
       - name: Build Container
-        run: |
-          docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} build ${{ matrix.container.service }}
+        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} build ${{ matrix.container.service }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
       - name: Check smoke test file
