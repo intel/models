@@ -17,10 +17,10 @@ def main(args):
        'Accept': 'application/vnd.github+json' }
     pr_info = json.loads(requests.get(url, headers=heads).text)
     
-    print(json.dumps(build_checks_json(pr_info, config, url)))
+    print(json.dumps(build_checks_json(pr_info, config, url, args.test_file)))
 
 
-def build_checks_json(pr_info, config, api_url):
+def build_checks_json(pr_info, config, api_url, test_file):
     # structure to store the checks to run and related information
     checks_json = {
         "flags": {
@@ -41,7 +41,7 @@ def build_checks_json(pr_info, config, api_url):
     
     PIPE = "|"
 
-    url = api_url.replace('api.', '').replace('repos/', '').replace('pulls', 'pull')
+    url = api_url.replace("api.", "").replace("repos/", "").replace("pulls", "pull")
 
     # directory structure for models dir
     valid_model_dir = re.compile(
@@ -95,7 +95,8 @@ def build_checks_json(pr_info, config, api_url):
                 "service": service,
                 "project": f"{os.getenv('GITHUB_RUN_NUMBER', default='0')}-{composefile.split('/')[1]}",
                 "file": f"{composefile}/docker-compose.yml",
-                "runner": f"{runner[platform]}"
+                "runner": f"{runner[platform]}",
+                "smoke": f"{container}/{test_file}"
             }
         )
 
@@ -125,6 +126,9 @@ if __name__ == "__main__":
     )
     arg_parser.add_argument(
         "-u", "--pr_url", help="Pull request URL endpoint for REST calls", required=True
+    )
+    arg_parser.add_argument(
+        "-f", "--test_file", help="Yaml file name that contains the tests for the models", default="tests.yaml"
     )
     args = arg_parser.parse_args()
 
