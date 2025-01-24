@@ -1,0 +1,15 @@
+name: Build IPEX base container
+on:
+  workflow_dispatch:
+    inputs:
+      whl_url:
+        description: IPEX binary URL
+        required: true
+
+jobs:
+  build-base-container:
+    name: Build IPEX Base Container
+    runs-on: k8s-runners
+    steps:
+      - name: Dummy step
+        run: echo "This is a place holder for a GHA workflow in development"
