@@ -9,7 +9,7 @@ on:
 jobs:
   build-base-container:
     name: Build IPEX Base Container
-    runs-on: k8s-runners
+    runs-on: k8-runners
     steps:
       - name: Dummy step
         run: echo "This is a place holder for a GHA workflow in development"
