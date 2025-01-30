@@ -112,7 +112,7 @@ if __name__ == "__main__":
         required=True,
     )
     arg_parser.add_argument(
-        "-c", "--config_file", help="Config file in YAML format.", required=True
+        "-c", "--config_file", help="Config file in JSON format.", required=True
     )
     args = arg_parser.parse_args()
 
