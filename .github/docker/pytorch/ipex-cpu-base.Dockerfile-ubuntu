@@ -1,0 +1,54 @@
+# Copyright (c) 2025 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ============================================================================
+#
+
+ARG BASE_IMAGE
+ARG BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+
+ARG WHL_URL
+ARG PYTHON_VERSION
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    ca-certificates \
+    git \
+    curl \
+    wget \
+    openssh-server
+
+RUN apt-get install -y --no-install-recommends --fix-missing \
+    libpython${PYTHON_VERSION} \
+    python${PYTHON_VERSION} \
+    python3-pip \
+    python${PYTHON_VERSION}-distutils && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN rm -rf /usr/lib/python${PYTHON_VERSION}/EXTERNALLY-MANAGED
+
+# Some TF tools expect a "python" binary
+RUN ln -sf "$(which python${PYTHON_VERSION})" /usr/local/bin/python && \
+    ln -sf "$(which python${PYTHON_VERSION})" /usr/local/bin/python3 && \
+    ln -sf "$(which python${PYTHON_VERSION})" /usr/bin/python
+
+RUN python -m pip --no-cache-dir install --upgrade pip
+
+RUN wget --no-check-certificate -r -np -nd ${WHL_URL} -P /tmp/whls
+
+RUN python -m pip install /tmp/whls/*.whl && \
+    rm -rf /tmp/whls
