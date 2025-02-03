@@ -25,4 +25,4 @@ jobs:
       env:
         WHL_URL: $${{ inputs.whl_url }}
         REGISTRY: $${{ secrets.REGISTRY }}
-      run: docker compose build -f ${{ github.workspace }}/.github/docker/pytorch/docker-compose.yml ipex-cpu
+      run: docker compose -f ${{ github.workspace }}/.github/docker/pytorch/docker-compose.yml build ipex-cpu
