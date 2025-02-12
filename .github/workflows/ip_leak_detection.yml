@@ -1,0 +1,34 @@
+name: IP Leak Detection
+on:
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  ip-leak-detection:
+    runs-on: k8-runners
+    outputs:
+      groups: ${{ steps.run-cmd.outputs.VALUE }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run Tool to detect IP Leaks
+        id: run-cmd
+        shell: bash
+        run: |
+          wget http://pvtools.intel.com/files/ipldt3_lin_intel64.tgz -P /tmp && \
+          tar -xvzf /tmp/ipldt3_lin_intel64.tgz -C /tmp
+
+          /tmp/ipldt3_lin_intel64/ipldt3_lin_intel64 -s .github/ip_leak_detection/pii.aifw.all.yaml.0 -i \
+          ${{ github.workspace }} --exclude-by-regex .*\.git\/.* \
+          --exclude-by-regex .*\.github\/.* --exclude-by-regex .*\CODEOWNERS --exclude "*.patch" \
+          -usedb .github/ip_leak_detection/ipldt_results-resolve-false-hits.db \
+          -usedb .github/ip_leak_detection/ipldt_results-resolve-false-domain-hits.db \
+          -r /tmp/results --r-overwrite
+      - name: Upload Failed Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          path: /tmp/results
+          name: ip_leak_detection_results
