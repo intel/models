@@ -88,6 +88,8 @@ jobs:
       - name: Check smoke test file
         run: test -f ${{ matrix.container.smoke }}
       - name: Execute Test Runner
+        shell: bash
         run: python3 ai-containers/test-runner/test_runner.py -f ${{ matrix.container.smoke }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
+          TOKEN: ${{ secrets.HF_TOKEN }}
