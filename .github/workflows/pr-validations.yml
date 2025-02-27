@@ -59,32 +59,13 @@ jobs:
         run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} up --build ${{ matrix.container.service }}
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
-      - name: Docker Compose Down
-        if: always()
-        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down ${{ matrix.container.service }}
-        env:
-          REGISTRY: ${{ secrets.REGISTRY }}
-  smoke_test:
-    name: Smoke Test Functional Validation
-    needs: [checks_setup, containers_check]
-    if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_container_change }}
-    runs-on: ${{ matrix.container.runner }}
-    strategy:
-      matrix:
-        container: ${{ fromJSON(needs.checks_setup.outputs.checks).services }}
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - name: Get Test Runner
+        uses: actions/checkout@v4
         with:
           repository: intel/ai-containers
           path: ai-containers
       - name: Install Requirements
         run: pip install -r ai-containers/test-runner/requirements.txt
-      - name: Build Container
-        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} build ${{ matrix.container.service }}
-        env:
-          REGISTRY: ${{ secrets.REGISTRY }}
       - name: Check smoke test file
         run: test -f ${{ matrix.container.smoke }}
       - name: Execute Test Runner
@@ -93,3 +74,8 @@ jobs:
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
           TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Docker Compose Down
+        if: always()
+        run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down ${{ matrix.container.service }}
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
