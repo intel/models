@@ -43,7 +43,7 @@ def setup_runners():
     # dictionary for runner labels
     runner = {
       "cpu": "k8-runners",
-      "gpu": "pvc"
+      "gpu": "max:1550"
     }
 
     return runner
