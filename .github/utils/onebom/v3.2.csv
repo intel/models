@@ -8,7 +8,6 @@ Path,IPX IP Name,IPX Latest IPV
 ./datasets/cloud_data_connector/requirements.txt,Intel(R)AIReferenceModels-datasets-cloud_data_connector_src,f01bff47-7be1-4001-bc54-647309618eba
 ./datasets/cloud_data_connector/samples/azure/requirements.txt,Intel(R)AIReferenceModels-datasets-cloud_data_connector-samples-azure_src,e32762e1-d7fa-4665-97e9-5d25c41a98ef
 ./datasets/cloud_data_connector/samples/interoperability/requirements.txt,Intel(R)AIReferenceModels-datasets-cloud_data_connector-samples-interoperability_src,3c704b08-c891-46ed-86e0-ef884c067a24
-./datasets/dataset_api/requirements.txt,Intel(R)AIReferenceModels-datasets-dataset_api_src,4fda95fe-5d85-4306-9af4-780e832488e2
 ./docs/notebooks/low_precision_optimization/tensorflow/requirements.txt,Intel(R)AIReferenceModels-docs-notebooks-low_precision_optimization-tensorflow_src,bd67456d-7adb-47e4-99e2-4dcd569208dd
 ./docs/notebooks/transfer_learning/requirements.txt,Intel(R)AIReferenceModels-docs-notebooks-transfer_learning_src,b543ab59-c81b-49df-b519-ad0f41309660
 ./models/diffusion/tensorflow/stable_diffusion/inference/requirements.txt,Intel(R)AIReferenceModels-models-diffusion-tensorflow-stable_diffusion-inference_src,ffdb8c3d-f553-4b5c-b850-50957b08bb27

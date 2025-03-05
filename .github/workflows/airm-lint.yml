@@ -53,6 +53,12 @@ jobs:
           VALIDATE_PYTHON_PYLINT: false
           VALIDATE_PYTHON_PYINK: false
           VALIDATE_PYTHON_RUFF: false
+          VALIDATE_JUPYTER_NBQA_BLACK: false
+          VALIDATE_JUPYTER_NBQA_FLAKE8: false
+          VALIDATE_JUPYTER_NBQA_ISORT: false
+          VALIDATE_JUPYTER_NBQA_MYPY: false
+          VALIDATE_JUPYTER_NBQA_PYLINT: false
+          VALIDATE_JUPYTER_NBQA_RUFF: false
           #disabled till shell format implementation
           VALIDATE_SHELL_SHFMT: false
           VALIDATE_YAML_PRETTIER: false
