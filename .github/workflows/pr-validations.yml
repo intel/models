@@ -45,10 +45,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   containers_check:
-    name: Build and Test Container
+    name: Build and Smoke Test Container
     needs: checks_setup
-    runs-on: k8-runners
     if: ${{ fromJson(needs.checks_setup.outputs.checks).flags.is_container_change }}
+    runs-on: ${{ matrix.container.runner }}
     strategy:
       matrix:
         container: ${{ fromJSON(needs.checks_setup.outputs.checks).services }}
