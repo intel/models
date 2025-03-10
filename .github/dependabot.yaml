@@ -24,3 +24,8 @@ updates:
     directory: ".github/workflows"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "pip"
+    directories:
+      - "**/*"
+    schedule:
+      interval: "weekly"
