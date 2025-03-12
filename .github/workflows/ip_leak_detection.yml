@@ -25,6 +25,8 @@ jobs:
           --exclude-by-regex .*\.github\/.* --exclude-by-regex .*\CODEOWNERS --exclude "*.patch" \
           -usedb .github/ip_leak_detection/ipldt_results-resolve-false-hits.db \
           -usedb .github/ip_leak_detection/ipldt_results-resolve-false-domain-hits.db \
+          -usedb .github/ip_leak_detection/ipldt_results_people.db \
+          -usedb .github/ip_leak_detection/ipldt_results.pdl.db \
           -r /tmp/results --r-overwrite
       - name: Upload Failed Artifacts
         if: always()
