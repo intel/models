@@ -2,7 +2,9 @@
 name: AIRM Linter
 permissions: read-all
 on:
-  push: null
+  push:
+    branches:
+      - main
   pull_request: null
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,12 +22,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2
+      - name: Get Branch Name
+        run: |
+          branchname=$(git rev-parse --abbrev-ref HEAD)
+          echo "branchname=$branchname" >> "$GITHUB_ENV"
       - name: Super-linter
         uses: super-linter/super-linter/slim@v7.3.0
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: ${{ env.branchname }}
           GITHUB_ACTIONS_COMMAND_ARGS: '-ignore SC.*'
           VALIDATE_ANSIBLE: false
           #disabled till code cleanup
