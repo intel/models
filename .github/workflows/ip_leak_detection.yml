@@ -11,8 +11,6 @@ jobs:
       groups: ${{ steps.run-cmd.outputs.VALUE }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Run Tool to detect IP Leaks
         id: run-cmd
         shell: bash
