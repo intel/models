@@ -28,7 +28,6 @@ Path,IPX IP Name,IPX Latest IPV
 ./models_v2/pytorch/efficientnet/inference/gpu/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-efficientnet-inference-gpu_src,31aff69d-ff1f-47bc-8f25-4f30219289af
 ./models_v2/pytorch/fastpitch/inference/gpu/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-fastpitch-inference-gpu_src,04bf6a6f-84b6-4f82-90c4-e76953882a40
 ./models_v2/pytorch/fbnet/inference/gpu/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-fbnet-inference-gpu_src,24e273b7-216a-44a4-a431-1f942050460f
-./models_v2/pytorch/gpt-j_mlperf/inference/cpu/automation/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-gpt-j_mlperf-inference-cpu-automation_src,822582cd-2097-4cca-a070-0845586b0e8a
 ./models_v2/pytorch/IFRNet/inference/gpu/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-IFRNet-inference-gpu_src,24c46102-7420-4fa8-b254-bc512c4aefb4
 ./models_v2/pytorch/llama/training/cpu/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-llama-training-cpu_src,08bcdf2a-2a06-458e-b608-4d0ee0167913
 ./models_v2/pytorch/maskrcnn/inference/cpu/maskrcnn-benchmark/requirements.txt,Intel(R)AIReferenceModels-models_v2-pytorch-maskrcnn-inference-cpu-maskrcnn-benchmark_src,8edfe928-8d85-4343-ac66-35bb4b2ff695
