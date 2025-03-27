@@ -2,18 +2,30 @@ INTEL CONFIDENTIAL
 # v1.00
 -------------------------------------------------------------------------------------------------
 
-[X] robison ("people_list")
--------------------------------------------------------------------------------------------------
- [X] "r.*\/docs\/notebooks\/low_precision_optimization\/tensorflow\/pyproject\.toml"
-  [X]     "uthors = ["Clayne B Robison clayne.b.robison@in"
-  [X]     " B Robison clayne.b.robison@intel.com", "Srikan"
--------------------------------------------------------------------------------------------------
-
 [X] @intel.com ("people_list")
 -------------------------------------------------------------------------------------------------
  [X] "r.*\/docs\/notebooks\/low_precision_optimization\/tensorflow\/pyproject\.toml"
   [X]     "son clayne.b.robison@intel.com", "Srikanth Ramakri"
   [X]     "srikanth.ramakrishna@intel.com"]..[tool.poetry.dep"
+ [X] "r.*\/models_v2\/tensorflow\/resnet50v1_5\/training\/gpu\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
+ [X] "r.*\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
+-------------------------------------------------------------------------------------------------
+
+[X] zhang ("people_list")
+-------------------------------------------------------------------------------------------------
+ [X] "r.*\/models\/image_recognition\/tensorflow\/resnet50v1_5\/training\/cpu\/mlperf_resnet\/resnet_model\.py"
+  [X]     [169]"Kaiming He, Xiangyu Zhang, Shaoqing Ren, and "
+ [X] "r.*\/models\/image_recognition\/tensorflow\/resnet50v1_5\/training\/gpu\/mlperf_resnet\/resnet_model\.py"
+  [X]     [169]"Kaiming He, Xiangyu Zhang, Shaoqing Ren, and "
+-------------------------------------------------------------------------------------------------
+
+[X] robison ("people_list")
+-------------------------------------------------------------------------------------------------
+ [X] "r.*\/docs\/notebooks\/low_precision_optimization\/tensorflow\/pyproject\.toml"
+  [X]     "uthors = ["Clayne B Robison clayne.b.robison@in"
+  [X]     " B Robison clayne.b.robison@intel.com", "Srikan"
 -------------------------------------------------------------------------------------------------
 
 [X] ramakrishna ("people_list")
