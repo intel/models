@@ -1,0 +1,12 @@
+INTEL CONFIDENTIAL
+# v1.00
+-------------------------------------------------------------------------------------------------
+
+[X] @intel.com ("people_list")
+-------------------------------------------------------------------------------------------------
+ [X] "r.*\/models_v2\/tensorflow\/resnet50v1_5\/training\/gpu\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
+ [X] "r.*\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
+-------------------------------------------------------------------------------------------------
+

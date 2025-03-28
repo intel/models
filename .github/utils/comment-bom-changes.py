@@ -88,10 +88,7 @@ if __name__ == "__main__":
         "-u", "--pr_url", help="Pull request URL endpoint for REST calls", required=True
     )
     arg_parser.add_argument(
-        "-j",
-        "--bom_files_json",
-        help="JSON structure with checks information",
-        required=True,
+        "-j", "--bom_files_json", help="JSON structure with checks information", required=True
     )
     args = arg_parser.parse_args()
 

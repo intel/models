@@ -20,30 +20,20 @@ jobs:
       statuses: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Fetch Base Branch
-        run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
       - name: Get Branch Name
         run: |
           branchname=$(git rev-parse --abbrev-ref HEAD)
           echo "branchname=$branchname" >> "$GITHUB_ENV"
-      - name: Get changed files
-        id: changed-files
-        run: |
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(py|js|ts|json|yaml|yml|sh)$' || echo "")
-          echo "CHANGED_FILES=$(echo $CHANGED_FILES | tr '\n' ' ')" >> $GITHUB_ENV
-      - name: Print Changed Files
-        run: echo "Files detected for linting:$CHANGED_FILES"
       - name: Super-linter
         uses: super-linter/super-linter/slim@v7.3.0
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: ${{ env.branchname }}
           GITHUB_ACTIONS_COMMAND_ARGS: '-ignore SC.*'
-          DEFAULT_BRANCH: main
           VALIDATE_ANSIBLE: false
           #disabled till code cleanup
           VALIDATE_BASH: false
@@ -62,12 +52,14 @@ jobs:
           VALIDATE_MARKDOWN_PRETTIER: false
           VALIDATE_NATURAL_LANGUAGE: false
           #disabled python till code cleanup
-          VALIDATE_PYTHON_RUFF: false
+          VALIDATE_PYTHON: false
+          VALIDATE_PYTHON_BLACK: false
           VALIDATE_PYTHON_FLAKE8: false
+          VALIDATE_PYTHON_ISORT: false
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_PYLINT: false
-          VALIDATE_PYTHON_ISORT: false
           VALIDATE_PYTHON_PYINK: false
+          VALIDATE_PYTHON_RUFF: false
           VALIDATE_JUPYTER_NBQA_BLACK: false
           VALIDATE_JUPYTER_NBQA_FLAKE8: false
           VALIDATE_JUPYTER_NBQA_ISORT: false
