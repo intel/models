@@ -23,3 +23,8 @@ INTEL CONFIDENTIAL
   [X]     "amakrishna srikanth.ramakrishna@intel.com"]..[tool."
 -------------------------------------------------------------------------------------------------
 
+[X] @intel.com ("people_list")
+-------------------------------------------------------------------------------------------------
+ [X] "r.*\/models_v2\/tensorflow\/bert_large\/inference\/cpu\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com\"}]"}.].readme = "R"
+-------------------------------------------------------------------------------------------------
