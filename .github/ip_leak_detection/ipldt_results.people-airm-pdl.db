@@ -4,9 +4,13 @@ INTEL CONFIDENTIAL
 
 [X] @intel.com ("people_list")
 -------------------------------------------------------------------------------------------------
- [X] "r.*\/models_v2\/tensorflow\/resnet50v1_5\/training\/gpu\/pyproject\.toml"
-  [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
  [X] "r.*\/pyproject\.toml"
   [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
+ [X] "r.*\/models_v2\/tensorflow\/resnet50v1_5\/training\/gpu\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.].readme = "READM"
+ [X] "r.*\/models_v2\/tensorflow\/maskrcnn\/inference\/gpu\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.]..[tool.poetry]."
+ [X] "r.*\/models_v2\/tensorflow\/maskrcnn\/training\/gpu\/pyproject\.toml"
+  [X]     ""ai.reference.models@intel.com"}.]..[tool.poetry]."
 -------------------------------------------------------------------------------------------------
 
