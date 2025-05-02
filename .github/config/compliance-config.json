@@ -10,7 +10,8 @@
   ],
   "platform": [
     "cpu",
-    "gpu"
+    "gpu",
+    "hpu"
   ],
   "mandatory_files": [
     "README.md",
@@ -85,6 +86,7 @@
     "pytorch/vit/inference/cpu",
     "pytorch/llama/training/cpu",
     "pytorch/llama/inference/cpu",
+    "pytorch/llama/inference/hpu",
     "pytorch/torchrec_dlrm/inference/cpu",
     "pytorch/chatglm/inference/cpu",
     "pytorch/yolov7/inference/cpu",
