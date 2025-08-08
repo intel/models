@@ -23,7 +23,7 @@ jobs:
             https://${{ github.actor }}:${{ github.token }}@github.com/intel-innersource/frameworks.ai.models.intel-models.git \
             airm-branches-subset
           cd airm-branches-subset
-          BRANCHES='pytorch-r2.2-models pytorch-r2.3-models r3.4'
+          BRANCHES='pytorch-r2.2-models pytorch-r2.3-models r3.4 r3.4.1'
           for branch in $BRANCHES; do git fetch origin $branch:$branch; done
           cd ..
           git clone --bare airm-branches-subset airm-branches-subset-bare
