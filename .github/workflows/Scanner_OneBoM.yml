@@ -64,12 +64,12 @@ jobs:
       - name: Check Env
         run: env
       - name: Checkout Script Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: "${{ env.ONEBOM_SCRIPTS_REF }}"
           path: "${{ github.workspace }}/${{ env.ONEBOM_SCRIPTS_REF }}"
       - name: Checkout ${{ matrix.release-version}} Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ matrix.release-version }}
           path: ${{ github.workspace }}/${{ matrix.release-version }}

@@ -36,12 +36,12 @@ jobs:
     outputs:
       requirements-files: ${{ steps.requirements-data.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: "scripts"
           ref: "jaimemcc/onebom-generator"
       - name: Pulling previous release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: "previous-release"
           ref: ${{ inputs.previous-ref }}
@@ -78,12 +78,12 @@ jobs:
     outputs:
       requirements-files: ${{ steps.requirements-data.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: "scripts"
           ref: "jaimemcc/onebom-generator"
       - name: Pulling current release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: "current-release"
           ref: ${{ inputs.current-ref }}
@@ -119,7 +119,7 @@ jobs:
         no_proxy: ${{ secrets.no_proxy }}
     needs: [generate_previous_release_pins, generate_current_release_pins]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: "scripts"
       - name: Pull pinned files from previous and current release data

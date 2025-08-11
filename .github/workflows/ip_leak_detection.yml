@@ -10,7 +10,7 @@ jobs:
     outputs:
       groups: ${{ steps.run-cmd.outputs.VALUE }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Run Tool to detect IP Leaks
         id: run-cmd
         shell: bash

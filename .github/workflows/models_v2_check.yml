@@ -6,7 +6,7 @@ jobs:
   models_check:
     runs-on: k8-runners
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Checking models v2 compliance
         run: |
           yes | pip install pyyaml termcolor

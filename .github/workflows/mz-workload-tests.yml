@@ -106,10 +106,10 @@ jobs:
       shell: bash
       run: echo "project-number=$(shuf -i 0-10000 -n1)" >> $GITHUB_ENV
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Checkout OneAPI Tools Repository
       if: inputs.is_lkg_drop
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: intel-innersource/frameworks.devops.oneapi.tools.component-drop-tool
         token: ${{ secrets.SYSTFQABOT_TOKEN }}
