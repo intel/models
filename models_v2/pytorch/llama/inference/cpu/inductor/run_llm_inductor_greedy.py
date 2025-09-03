@@ -119,6 +119,7 @@ if args.profile:
 inductor_config.cpp_wrapper = True
 inductor_config.max_autotune = True
 inductor_config.max_autotune_gemm_backends = "CPP,ATEN"
+inductor_config.cpp.use_small_dequant_buffer = True
 torch._dynamo.config.allow_unspec_int_on_nn_module = True
 
 if args.dtype in ["fp32","bf16", "fp16"]:
