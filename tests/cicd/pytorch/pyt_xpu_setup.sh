@@ -26,5 +26,5 @@ else
   echo "Installing pytorch"
   export no_proxy=“”
   export NO_PROXY=“”
-  python -m pip install torch==${FRAMEWORK_VERSION} torchvision==${TORCHVISION_VERSION} intel-extension-for-pytorch==${FRAMEWORK_EXTENSION_VERSION} --extra-index-url https://pytorch-extension.intel.com/release-whl-aitools/
+  python -m pip install torch==${FRAMEWORK_VERSION} torchvision==${TORCHVISION_VERSION} intel-extension-for-pytorch==${FRAMEWORK_EXTENSION_VERSION} --index-url https://pytorch-extension.intel.com/release-whl-aitools/
 fi

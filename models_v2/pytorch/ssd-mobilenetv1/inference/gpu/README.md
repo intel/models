@@ -55,7 +55,7 @@ Download from [this URL](https://drive.google.com/drive/folders/1pKn-RifvJGWiOx0
     ```
 5. Install the latest GPU versions of [torch, torchvision and intel_extension_for_pytorch](https://intel.github.io/intel-extension-for-pytorch/index.html#installation):
   ```
-  python -m pip install torch==<torch_version> torchvision==<torchvvision_version> intel-extension-for-pytorch==<ipex_version> --extra-index-url https://pytorch-extension.intel.com/release-whl-aitools/
+  python -m pip install torch==<torch_version> torchvision==<torchvvision_version> intel-extension-for-pytorch==<ipex_version> --index-url https://pytorch-extension.intel.com/release-whl-aitools/
   ```
 6. Set environment variables for Intel® oneAPI Base Toolkit: 
     Default installation location `{ONEAPI_ROOT}` is `/opt/intel/oneapi` for root account, `${HOME}/intel/oneapi` for other accounts

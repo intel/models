@@ -8,7 +8,7 @@ Prepare the environment, you may create a Python virtual enviromment `virtualenv
     python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
     # Install oneccl:
-    python -m pip install oneccl_bind_pt --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/cpu/us/
+    python -m pip install oneccl_bind_pt --index-url https://pytorch-extension.intel.com/release-whl/stable/cpu/us/
 
 ## Install generic dependencies
 Make sure the following components are installed in your environment :
