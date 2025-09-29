@@ -41,6 +41,7 @@ jobs:
           BRANCHES='pytorch-r2.2-models pytorch-r2.3-models r3.4 r3.4.1'
           for branch in $BRANCHES; do git fetch origin $branch:$branch; done
           cd ..
+          rm -rf airm-branches-subset-bare
           git clone --bare airm-branches-subset airm-branches-subset-bare
           cd airm-branches-subset-bare
           java -jar ../bfg-1.14.0.jar --delete-folders .github --delete-files .github --no-blob-protection
