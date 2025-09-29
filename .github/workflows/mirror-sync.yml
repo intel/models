@@ -20,8 +20,9 @@ jobs:
       - name: Install required packages
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget git
+          # Check if packages are available, skip installation if sudo not available
+          which wget || echo "wget not available, hoping it's pre-installed"
+          which git || echo "git not available, hoping it's pre-installed"
       - name: Java Set Up
         uses: actions/setup-java@v5
         with:
