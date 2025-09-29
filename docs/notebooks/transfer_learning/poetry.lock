@@ -2517,14 +2517,14 @@ webencodings = "*"
 
 [[package]]
 name = "keras"
-version = "3.11.2"
+version = "3.11.3"
 description = "Multi-backend Keras"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "keras-3.11.2-py3-none-any.whl", hash = "sha256:539354b1870dce22e063118c99c766c3244030285b5100b4a6f8840145436bf0"},
-    {file = "keras-3.11.2.tar.gz", hash = "sha256:b78a4af616cbe119e88fa973d2b0443b70c7f74dd3ee888e5026f0b7e78a2801"},
+    {file = "keras-3.11.3-py3-none-any.whl", hash = "sha256:f484f050e05ee400455b05ec8c36ed35edc34de94256b6073f56cfe68f65491f"},
+    {file = "keras-3.11.3.tar.gz", hash = "sha256:efda616835c31b7d916d72303ef9adec1257320bc9fd4b2b0138840fc65fb5b7"},
 ]
 
 [package.dependencies]
