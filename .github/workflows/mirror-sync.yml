@@ -32,6 +32,8 @@ jobs:
         id: mirror-repo
         run: |
           wget --quiet https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
+          # Cleanup any previous clone on this node
+          rm -rf airm-branches-subset
           git clone --single-branch --branch main \
             https://${{ github.actor }}:${{ github.token }}@github.com/intel-innersource/frameworks.ai.models.intel-models.git \
             airm-branches-subset
@@ -43,7 +45,8 @@ jobs:
           cd airm-branches-subset-bare
           java -jar ../bfg-1.14.0.jar --delete-folders .github --delete-files .github --no-blob-protection
           git reflog expire --expire=now --all && git gc --prune=now --aggressive
-          git push --mirror https://${{ secrets.TF_QA_PROD_GITHUB_USER_ID }}:${{ secrets.TF_QA_PROD_PUBLIC_TOKEN }}@github.com/intel/ai-reference-models.git
+          # Use token directly without username for public GitHub
+          git push --mirror https://${{ secrets.TF_QA_PROD_PUBLIC_TOKEN }}@github.com/intel/ai-reference-models.git
       - name: Cleanup
         if: always()
         run: |
