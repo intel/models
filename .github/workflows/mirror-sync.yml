@@ -8,7 +8,7 @@ permissions: write-all
 jobs:
   mirror-sync:
     name: Mirror sync-up
-    runs-on: [linux, arc-prod-green]
+    runs-on: self-hosted
     steps:
       - name: Debug runner info
         run: |
