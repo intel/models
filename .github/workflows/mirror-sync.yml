@@ -8,8 +8,20 @@ permissions: write-all
 jobs:
   mirror-sync:
     name: Mirror sync-up
-    runs-on: k8-runners
+    runs-on: [linux, arc-prod-green]
     steps:
+      - name: Debug runner info
+        run: |
+          echo "Runner name: $RUNNER_NAME"
+          echo "Runner OS: $RUNNER_OS"
+          echo "Runner architecture: $RUNNER_ARCH"
+          whoami
+          pwd
+      - name: Install required packages
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget git
       - name: Java Set Up
         uses: actions/setup-java@v5
         with:
