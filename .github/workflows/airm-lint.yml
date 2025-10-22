@@ -28,7 +28,7 @@ jobs:
           branchname=$(git rev-parse --abbrev-ref HEAD)
           echo "branchname=$branchname" >> "$GITHUB_ENV"
       - name: Super-linter
-        uses: super-linter/super-linter/slim@v8.2.0
+        uses: super-linter/super-linter/slim@v8.2.1
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
