@@ -123,7 +123,7 @@ jobs:
         with:
           path: "scripts"
       - name: Pull pinned files from previous and current release data
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           path: "output_data"
           merge-multiple: true
