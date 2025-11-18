@@ -114,7 +114,7 @@ jobs:
       - name: List directory contents
         run: ls -al ${{ matrix.release-version }}
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ env.ARTIFACT_PREFIX }}-${{ matrix.release-version }}
           if-no-files-found: error
@@ -150,7 +150,7 @@ jobs:
         cat "${{ env.APPS_NEEDING_RELEASE }}"
         cat "${{ env.APPS_NEEDING_VARIANT }}"
     - name: Upload Diff files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ${{ env.ARTIFACT_PREFIX }}
         if-no-files-found: error

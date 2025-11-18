@@ -41,7 +41,7 @@ jobs:
     - name: Get Test Name
       if: always()
       run: echo "test=$(basename ${{ inputs.dir }})" >> $GITHUB_ENV
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       if: always()
       with:
         name: '${{ env.test }} outputs'

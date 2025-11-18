@@ -99,7 +99,7 @@ jobs:
         env:
           output_dir: "output_data/${{ inputs.release-label }}/${{ inputs.job-index }}"
       - name: Upload BOM Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: "output_data"
           name: "${{ env.unumber }}"

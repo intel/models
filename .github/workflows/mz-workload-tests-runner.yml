@@ -178,7 +178,7 @@ jobs:
         cpuid | grep -q "AVX512" && is_avx=true
         echo "IS_AVX=$is_avx" >> "$GITHUB_ENV"
     - if: success() || failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: workload-results
         path: tests/cicd/output/*

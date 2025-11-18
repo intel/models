@@ -157,7 +157,7 @@ jobs:
         env:
           previous: ${{ inputs.previous-ref }}
           current: ${{ inputs.current-ref }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           path: "output_data"
           name: "final-releases-metadata"
