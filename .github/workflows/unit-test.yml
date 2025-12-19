@@ -12,12 +12,21 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.10'
+      - name: Create Virtual Environment
+        run: |
+          cd ${{ github.sha }}
+          python -m venv .venv-unit-test
+          echo "VIRTUAL_ENV=${{ github.workspace }}/${{ github.sha }}/.venv-unit-test" >> $GITHUB_ENV
+          echo "${{ github.workspace }}/${{ github.sha }}/.venv-unit-test/bin" >> $GITHUB_PATH
       - name: Install Poetry
         run: |
+          cd ${{ github.sha }}
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Install Test Dependencies
         run: |
+          cd ${{ github.sha }}
+          source .venv-unit-test/bin/activate
           if [ -f "pyproject.toml" ]; then
             echo "pyproject.toml found, using Poetry to install dependencies."
             poetry install
@@ -28,6 +37,6 @@ jobs:
             echo "No pyproject.toml or requirements.txt found, skipping dependency installation."
           fi
       - name: Run Style Test using Make
-        run: echo $(pwd) && make lint
+        run: cd ${{ github.sha }} && echo $(pwd) && make lint
       - name: Run Unit Test
-        run: make unit_test
+        run: cd ${{ github.sha }} && make unit_test
