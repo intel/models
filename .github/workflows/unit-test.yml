@@ -37,6 +37,6 @@ jobs:
             echo "No pyproject.toml or requirements.txt found, skipping dependency installation."
           fi
       - name: Run Style Test using Make
-        run: cd ${{ github.sha }} && echo $(pwd) && make lint
+        run: echo $(pwd) && ls -la && cat Makefile && make lint
       - name: Run Unit Test
         run: cd ${{ github.sha }} && make unit_test
