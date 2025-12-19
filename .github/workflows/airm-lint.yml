@@ -26,6 +26,7 @@ jobs:
           path: '${{ github.sha }}' # This sets the working directory to the commit ID
       - name: Get Branch Name
         run: |
+          cd ${{ github.sha }}
           branchname=$(git rev-parse --abbrev-ref HEAD)
           echo "branchname=$branchname" >> "$GITHUB_ENV"
       - name: Super-linter
@@ -71,3 +72,5 @@ jobs:
           VALIDATE_SHELL_SHFMT: false
           VALIDATE_YAML_PRETTIER: false
           YAML_CONFIG_FILE: .yaml-lint.yml
+        with:
+          working-directory: ${{ github.sha }}
