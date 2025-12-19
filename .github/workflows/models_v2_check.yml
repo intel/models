@@ -9,5 +9,5 @@ jobs:
       - uses: actions/checkout@v5
       - name: Checking models v2 compliance
         run: |
-          yes | pip install pyyaml termcolor
+          yes | python3 -m pip install pyyaml termcolor
           python3 .github/utils/models_v2-compliance-check.py --models_dir models_v2 --config_file .github/config/compliance-config.json
