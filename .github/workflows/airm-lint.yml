@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          path: '${{ github.sha }}' # This sets the working directory to the commit ID
       - name: Get Branch Name
         run: |
           branchname=$(git rev-parse --abbrev-ref HEAD)
