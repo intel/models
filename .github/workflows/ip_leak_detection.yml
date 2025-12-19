@@ -15,7 +15,7 @@ jobs:
         id: run-cmd
         shell: bash
         run: |
-          wget http://pvtools.intel.com/files/ipldt3_lin_intel64.tgz -P /tmp && \
+          wget http://pvtools.intel.com/files/ipldt3_lin_intel64.tgz --no-check-certificate -P /tmp && \
           tar -xvzf /tmp/ipldt3_lin_intel64.tgz -C /tmp
 
           /tmp/ipldt3_lin_intel64/ipldt3_lin_intel64 -s .github/ip_leak_detection/pii.aifw.all.yaml.0 -i \
