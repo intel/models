@@ -16,7 +16,7 @@ jobs:
         https_proxy: ${{ secrets.HTTPS_PROXY }}
         no_proxy: ${{ secrets.NO_PROXY }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run Transfer Learning Notebook Tests
         run: |
           python3 -m pip install virtualenv

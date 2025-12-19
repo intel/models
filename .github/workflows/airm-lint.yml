@@ -20,7 +20,7 @@ jobs:
       statuses: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           path: '${{ github.sha }}' # This sets the working directory to the commit ID

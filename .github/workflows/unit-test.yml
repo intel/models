@@ -5,7 +5,7 @@ jobs:
     runs-on: [k8-runners]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: '${{ github.sha }}' # This sets the working directory to the commit ID
       - name: Set up Python

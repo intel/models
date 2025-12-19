@@ -114,7 +114,7 @@ jobs:
     outputs:
       recipes: ${{ steps.recipes.outputs.RECIPES }}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Get Recipes
       id: recipes
       run: |
@@ -148,10 +148,10 @@ jobs:
       fail-fast: false
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     - name: Checkout OneAPI Tools Repository
       if: inputs.is_lkg_drop
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: intel-innersource/frameworks.devops.oneapi.tools.component-drop-tool
         token: ${{ secrets.SYSTFQABOT_TOKEN }}
@@ -191,7 +191,7 @@ jobs:
         framework: ${{ inputs.framework }}
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout Model Zoo Repo
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         path: 'AIRM'
     - name: Test Container Group

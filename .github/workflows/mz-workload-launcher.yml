@@ -20,7 +20,7 @@ jobs:
       #itex-xpu-tests: ${{ steps.set-input.outputs.ITEX_XPU_TESTS }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     - name: Define matrix - CPU
       id: set-input
       run: |
