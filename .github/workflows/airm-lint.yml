@@ -31,6 +31,8 @@ jobs:
           echo "branchname=$branchname" >> "$GITHUB_ENV"
       - name: Super-linter
         uses: super-linter/super-linter/slim@latest
+        with:
+          path: ${{ github.sha }}
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
