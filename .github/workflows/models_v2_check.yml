@@ -7,6 +7,10 @@ jobs:
     runs-on: k8-runners
     steps:
       - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # Default version for Ubuntu 24.04
       - name: Checking models v2 compliance
         run: |
           yes | python3 -m pip install pyyaml termcolor
