@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          path: '${{ github.sha }}' # This sets the working directory to the commit ID
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
