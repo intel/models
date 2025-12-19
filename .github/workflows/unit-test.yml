@@ -28,6 +28,6 @@ jobs:
             echo "No pyproject.toml or requirements.txt found, skipping dependency installation."
           fi
       - name: Run Style Test using Make
-        run: make lint
+        run: echo $PWD && make lint
       - name: Run Unit Test
         run: make unit_test
