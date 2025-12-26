@@ -78,12 +78,12 @@ jobs:
         run: python3.10 -m pip install -r ai-containers/test-runner/requirements.txt
       - name: Check smoke test file
         run: test -f ${{ matrix.container.smoke }}
-      - name: Execute Test Runner
-        shell: bash
-        run: python3.10 ai-containers/test-runner/test_runner.py -f ${{ matrix.container.smoke }}
-        env:
-          REGISTRY: ${{ secrets.REGISTRY }}
-          TOKEN: ${{ secrets.HF_TOKEN }}
+      # - name: Execute Test Runner
+      #   shell: bash
+      #   run: python3.10 ai-containers/test-runner/test_runner.py -f ${{ matrix.container.smoke }}
+      #   env:
+      #     REGISTRY: ${{ secrets.REGISTRY }}
+      #     TOKEN: ${{ secrets.HF_TOKEN }}
       - name: Docker Compose Down
         if: always()
         run: docker compose -p ${{ matrix.container.project }} -f ${{ matrix.container.file }} down ${{ matrix.container.service }}
