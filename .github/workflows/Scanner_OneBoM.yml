@@ -132,7 +132,7 @@ jobs:
     runs-on: ${{ inputs.runner_label }}
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
     - name: Validate Artifacts
       run: |
         ls -R
