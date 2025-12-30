@@ -51,14 +51,14 @@ jobs:
 
     steps:
       - name: Checkout MZ Repository [develop]
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.1
         with:
           repository: intel-innersource/frameworks.ai.models.intel-models
           token: ${{ secrets.GITHUB_TOKEN }}
           path: develop
 
       - name: Checkout MZ Repository [target]
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.1
         with:
           repository: intel-innersource/frameworks.ai.models.intel-models
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,7 +66,7 @@ jobs:
           ref: ${{inputs.target_branch}}
 
       - name: Checkout OneAPI Tools Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.1
         with:
           repository: intel-innersource/frameworks.devops.oneapi.tools.component-drop-tool
           token: ${{ secrets.SYSTFQABOT_TOKEN }}

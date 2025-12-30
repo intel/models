@@ -6,7 +6,7 @@ jobs:
   models_check:
     runs-on: k8-runners
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - name: Set up Python
         uses: actions/setup-python@v6
         with:

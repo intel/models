@@ -52,10 +52,10 @@ jobs:
         http_proxy: ${{ secrets.http_proxy }}
         no_proxy: ${{ secrets.no_proxy }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
         with:
           path: "scripts"
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
         with:
           ref: ${{ inputs.ref }}
           path: ${{ inputs.release-label }}

@@ -23,7 +23,7 @@ jobs:
     outputs:
       checks: ${{ steps.set_checks.outputs.checks }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - name: Analyze changed files
         id: set_checks
         run:
@@ -50,9 +50,9 @@ jobs:
         run: |
           echo "Dry Run for ${{ matrix.container.service }} with details:"
           echo " ${{ toJson(matrix.container) }}"
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
         if: ${{ inputs.dry-run == false }}
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
         if: ${{ inputs.dry-run == false }}
         with:
           repository: intel/ai-containers
